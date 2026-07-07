@@ -6,7 +6,9 @@ module.exports = {
       method: "GET",
       path: "/exchange/me",
       handler: "exchange.me",
-      config: {},
+      config: {
+        auth: {},
+      },
     },
     {
       method: "PUT",
