@@ -1,0 +1,26 @@
+{
+  "name": "community-skills-exchange-backend",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Strapi backend for the Community Skills Exchange Platform",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build"
+  },
+  "dependencies": {
+    "@strapi/plugin-users-permissions": "^5.35.0",
+    "@strapi/strapi": "^5.35.0",
+    "better-sqlite3": "^12.8.0",
+    "esbuild": "^0.28.0",
+    "pg": "^8.20.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.3",
+    "styled-components": "^6.3.12"
+  },
+  "engines": {
+    "node": ">=20.0.0 <=22.x.x",
+    "npm": ">=8.0.0"
+  }
+}

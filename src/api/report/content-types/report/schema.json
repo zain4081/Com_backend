@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reports",
+  "info": {
+    "singularName": "report",
+    "pluralName": "reports",
+    "displayName": "Report",
+    "description": "Abuse or misuse reports for moderation."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "reason": {
+      "type": "enumeration",
+      "enum": ["spam", "abuse", "fraud", "inappropriate", "other"],
+      "default": "other",
+      "required": true
+    },
+    "details": {
+      "type": "text"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["open", "resolved", "dismissed"],
+      "default": "open"
+    },
+    "skill": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::skill.skill",
+      "required": true
+    },
+    "reporter": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "required": true
+    }
+  }
+}
+
