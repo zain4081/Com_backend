@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2026-07-07T20:47:57.368Z"
+    "x-generation-date": "2026-07-08T12:58:47.716Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -3833,7 +3833,7 @@
         }
       }
     },
-    "/skills/{documentid}": {
+    "/skills/{id}": {
       "get": {
         "responses": {
           "200": {
@@ -3902,7 +3902,7 @@
         ],
         "parameters": [
           {
-            "name": "documentId",
+            "name": "id",
             "in": "path",
             "description": "",
             "deprecated": false,
@@ -3912,7 +3912,7 @@
             }
           }
         ],
-        "operationId": "get/skills/{documentId}"
+        "operationId": "get/skills/{id}"
       },
       "put": {
         "responses": {
@@ -3992,7 +3992,7 @@
             }
           }
         ],
-        "operationId": "put/skills/{documentId}",
+        "operationId": "put/skills/{id}",
         "requestBody": {
           "required": true,
           "content": {
@@ -4083,7 +4083,7 @@
             }
           }
         ],
-        "operationId": "delete/skills/{documentId}"
+        "operationId": "delete/skills/{id}"
       }
     },
     "/upload": {
