@@ -25,8 +25,11 @@ module.exports = [
   "strapi::poweredBy",
   "strapi::query",
   "strapi::body",
+
+  // Add your middleware here
+  "global::request-logger",
+
   "strapi::session",
   "strapi::favicon",
   "strapi::public",
 ];
-
