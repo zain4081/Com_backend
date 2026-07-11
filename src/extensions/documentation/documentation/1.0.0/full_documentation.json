@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2026-07-08T13:38:13.676Z"
+    "x-generation-date": "2026-07-11T10:33:35.072Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -6498,6 +6498,13 @@
                       }
                     }
                   },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "Editor",
+                      "User"
+                    ]
+                  },
                   "createdAt": {
                     "type": "string",
                     "format": "date-time"
@@ -8307,6 +8314,13 @@
                     }
                   }
                 }
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Editor",
+                  "User"
+                ]
               },
               "createdAt": {
                 "type": "string",
@@ -10401,6 +10415,13 @@
                   }
                 }
               },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Editor",
+                  "User"
+                ]
+              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -11596,6 +11617,13 @@
                         }
                       }
                     }
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "Editor",
+                      "User"
+                    ]
                   },
                   "createdAt": {
                     "type": "string",
@@ -12952,6 +12980,13 @@
                             }
                           }
                         }
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "Editor",
+                          "User"
+                        ]
                       },
                       "createdAt": {
                         "type": "string",
@@ -14438,6 +14473,13 @@
                     }
                   }
                 }
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Editor",
+                  "User"
+                ]
               },
               "createdAt": {
                 "type": "string",
