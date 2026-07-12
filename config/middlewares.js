@@ -26,8 +26,9 @@ module.exports = [
   "strapi::query",
   "strapi::body",
 
-  // Add your middleware here
+    // Custom middlewares
   "global::request-logger",
+  "global::remove-auth-header",
 
   "strapi::session",
   "strapi::favicon",
