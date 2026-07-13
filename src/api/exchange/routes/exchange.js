@@ -18,8 +18,14 @@ module.exports = {
     },
     {
       method: "GET",
-      path: "/exchange/dashboard",
-      handler: "exchange.dashboard",
+      path: "/exchange/bookings",
+      handler: "exchange.bookings",
+      config: {},
+    },
+    {
+      method: "GET",
+      path: "/exchange/stats",
+      handler: "exchange.stats",
       config: {},
     },
     {

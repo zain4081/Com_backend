@@ -67,6 +67,49 @@ module.exports = createCoreController("api::booking.booking", ({ strapi }) => ({
     ctx.body = { data: booking };
   },
 
+  async delete(ctx) {
+  const user = ctx.state.user;
+
+  if (!user) {
+    return ctx.unauthorized();
+  }
+
+  const id = ctx.params.id;
+
+  const booking = await strapi.db.query("api::booking.booking").findOne({
+      where: { id: id },
+      populate: {
+        skill: { populate: { owner: true } },
+        requester: true,
+        provider: true,
+      },
+    });
+  console.log("===========booking---->", booking );
+
+  if (!booking) {
+    return ctx.notFound();
+  }
+
+  if (
+    booking.requester?.id !== user.id &&
+    booking.provider?.id !== user.id
+  ) {
+    return ctx.forbidden();
+  }
+
+  const documentId = booking?.documentId
+
+  const res = await strapi.documents("api::booking.booking").delete({
+    documentId,
+  });
+
+  if(res){
+    ctx.status = 204;
+  }else{
+    ctx.status = 500;
+  }
+  },
+
   async update(ctx) {
     const user = ctx.state.user;
     if (!user) {
@@ -75,6 +118,7 @@ module.exports = createCoreController("api::booking.booking", ({ strapi }) => ({
 
     const bookingId = Number(ctx.params.id);
     const nextStatus = ctx.request.body?.data?.status;
+    console.log("comming status-", nextStatus)
     const booking = await strapi.db.query("api::booking.booking").findOne({
       where: { id: bookingId },
       populate: {
@@ -88,7 +132,7 @@ module.exports = createCoreController("api::booking.booking", ({ strapi }) => ({
       return ctx.notFound("Booking not found.");
     }
 
-    if (nextStatus === "cancelled") {
+    if (nextStatus == "cancelled") {
       if (booking.requester?.id !== user.id) {
         return ctx.forbidden("Only the requester can cancel a booking.");
       }

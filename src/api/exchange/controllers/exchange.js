@@ -63,7 +63,32 @@ module.exports = {
     ctx.body = { profile: updated };
   },
 
-  async dashboard(ctx) {
+  async bookings(ctx) {
+    const user = ctx.state.user;
+    if (!user) {
+      return ctx.unauthorized("Authentication required.");
+    }
+    const UserSelectedFields = ["id", "documentId", "username", "email", "type"]
+
+    const profile = await getOrCreateProfile(strapi, user);
+    const incomingBookings = await strapi.db.query("api::booking.booking").findMany({
+      where: { provider: user.id },
+      populate: { skill: { populate: { category: true } }, requester: { select: UserSelectedFields}, provider: { select: UserSelectedFields}},
+      orderBy: { createdAt: "desc" },
+    });
+    const outgoingBookings = await strapi.db.query("api::booking.booking").findMany({
+      where: { requester: user.id },
+      populate: { skill: { populate: { category: true } }, requester: { select: UserSelectedFields}, provider: { select: UserSelectedFields}},
+      orderBy: { createdAt: "desc" },
+    });
+
+    ctx.body = {
+      incomingBookings,
+      outgoingBookings,
+    };
+  },
+
+    async stats(ctx) {
     const user = ctx.state.user;
     if (!user) {
       return ctx.unauthorized("Authentication required.");
@@ -82,12 +107,12 @@ module.exports = {
     });
     const incomingBookings = await strapi.db.query("api::booking.booking").findMany({
       where: { provider: user.id },
-      populate: { skill: { populate: { category: true, owner: true } }, requester: true, provider: true },
+      populate: { skill: { populate: { category: true } }, requester: true, provider: true },
       orderBy: { createdAt: "desc" },
     });
     const outgoingBookings = await strapi.db.query("api::booking.booking").findMany({
       where: { requester: user.id },
-      populate: { skill: { populate: { category: true, owner: true } }, requester: true, provider: true },
+      populate: { skill: { populate: { category: true } }, requester: true, provider: true },
       orderBy: { createdAt: "desc" },
     });
     const notifications = await strapi.db.query("api::notification.notification").findMany({
@@ -95,26 +120,7 @@ module.exports = {
       populate: { booking: { populate: { skill: { populate: { category: true, owner: true } }, requester: true, provider: true } } },
       orderBy: { createdAt: "desc" },
     });
-    const reviews = await strapi.db.query("api::review.review").findMany({
-      where: { reviewee: user.id },
-      populate: { booking: { populate: { skill: true, requester: true, provider: true } }, skill: true, reviewer: true, reviewee: true },
-      orderBy: { createdAt: "desc" },
-    });
-
     ctx.body = {
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        fullName: profile.fullName,
-      },
-      profile,
-      offeredSkills,
-      requestedSkills,
-      incomingBookings,
-      outgoingBookings,
-      notifications,
-      reviews,
       stats: {
         offeredCount: offeredSkills.length,
         requestedCount: requestedSkills.length,
