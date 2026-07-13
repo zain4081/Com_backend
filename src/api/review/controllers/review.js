@@ -84,5 +84,61 @@ module.exports = createCoreController("api::review.review", ({ strapi }) => ({
 
     ctx.body = { data: review };
   },
+  async findBySkill(ctx) {
+    const { documentId } = ctx.params;
+
+    if (!documentId) {
+      return ctx.badRequest("Skill documentId is required.");
+    }
+
+    const reviews = await strapi.documents("api::review.review").findMany({
+      filters: {
+        skill: {
+          id: {
+            $eq: documentId,
+          },
+        },
+      },
+      fields: ["rating", "comment", "createdAt"],
+      populate: {
+        reviewer: {
+          fields: ["id", "username"],
+        },
+      },
+      sort: {
+        createdAt: "desc",
+      },
+    });
+
+    // const reviews = await strapi.documents("api::review.review").findMany({
+    //   populate: {
+    //     skill: true,
+    //   },
+    // });
+
+    // console.log(JSON.stringify(reviews, null, 2));
+
+    console.log("reviews---------->", reviews);
+
+    const reviewCount = reviews.length;
+
+    const averageRating =
+      reviewCount === 0
+        ? 0
+        : Number(
+            (
+              reviews.reduce((sum, review) => sum + review.rating, 0) /
+              reviewCount
+            ).toFixed(1)
+          );
+
+    ctx.body = {
+      data: {
+        averageRating,
+        reviewCount,
+        reviews,
+      },
+    };
+  },
 }));
 
