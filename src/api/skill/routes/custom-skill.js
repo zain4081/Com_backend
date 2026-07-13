@@ -5,6 +5,14 @@ module.exports = {
   routes: [
     {
       method: "GET",
+      path: "/skills/top-rated",
+      handler: "skill.findTopRated",
+      config: {
+        auth: false,
+      },
+    },
+    {
+      method: "GET",
       path: "/skills/type/:type",
       handler: "skill.findByType",
       config: {

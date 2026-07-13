@@ -187,4 +187,139 @@ module.exports = createCoreController("api::skill.skill", ({ strapi, super: pare
       data: skillsWithRatings,
     };
   },
+
+  /**
+ * GET /api/skills/top-rated
+ */
+async findTopRated(ctx) {
+  const skills = await strapi.documents("api::skill.skill").findMany({
+    filters: {
+      skillType: {
+        $eq: "offer",
+      },
+      approvalStatus: {
+        $eq: "approved",
+      },
+    },
+    populate: {
+      category: true,
+    },
+    sort: {
+      createdAt: "desc",
+    },
+  });
+
+
+  if (!skills.length) {
+    ctx.body = {
+      data: [],
+    };
+
+    return;
+  }
+
+
+  const skillIds = skills.map((skill) => skill.id);
+
+
+  const reviews = await strapi.db.query("api::review.review").findMany({
+    where: {
+      skill: {
+        id: {
+          $in: skillIds,
+        },
+      },
+    },
+    select: [
+      "id",
+      "rating",
+      "comment",
+      "createdAt",
+    ],
+    orderBy: {
+      createdAt: "desc",
+    },
+    populate: {
+      skill: {
+        select: ["id"],
+      },
+    },
+  });
+
+
+  const ratingMap = new Map();
+
+
+  for (const review of reviews) {
+
+    const skillId = review.skill?.id;
+
+    if (!skillId) continue;
+
+
+    if (!ratingMap.has(skillId)) {
+      ratingMap.set(skillId, {
+        total: 0,
+        count: 0,
+        reviews: [],
+      });
+    }
+
+
+    const stats = ratingMap.get(skillId);
+
+
+    stats.total += review.rating;
+    stats.count += 1;
+
+
+    stats.reviews.push({
+      id: review.id,
+      rating: review.rating,
+      comment: review.comment,
+      createdAt: review.createdAt,
+    });
+  }
+
+
+
+  const rankedSkills = skills
+    .map((skill) => {
+
+      const stats = ratingMap.get(skill.id);
+
+
+      return {
+        ...skill,
+
+        averageRating: stats
+          ? Number(stats.total / stats.count).toFixed(1)
+          : "0.0",
+
+        reviewCount: stats
+          ? stats.count
+          : 0,
+
+        reviews: stats
+          ? stats.reviews
+          : [],
+      };
+    })
+
+    // highest rating first
+    .sort(
+      (a,b) =>
+        Number(b.averageRating) -
+        Number(a.averageRating)
+    )
+
+    // top 3
+    .slice(0,3);
+
+
+
+  ctx.body = {
+    data: rankedSkills,
+  };
+},
 }));
