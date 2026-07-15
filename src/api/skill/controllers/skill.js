@@ -4,6 +4,7 @@ const { createCoreController } = require("@strapi/strapi").factories;
 
 const ALLOWED_TYPES = ["offer", "request"];
 
+
 async function attachRatings(strapi, skills) {
   if (!skills.length) return skills;
 
@@ -79,6 +80,49 @@ async function attachRatings(strapi, skills) {
 }
 
 module.exports = createCoreController("api::skill.skill", ({ strapi, super: parent }) => ({
+
+  /**
+   * @method GET
+   * @path /skills/homepage
+   */
+  async homepageSkills(ctx) {
+  const limit = Number(ctx.query.limit ?? 6);
+
+  const skills = await strapi.documents("api::skill.skill").findMany({
+    filters: {
+      skillType: "offer",
+      approvalStatus: "approved",
+    },
+    populate: {
+      owner: {
+        fields: ["id", "username"],
+      },
+      category: true,
+    },
+  });
+
+  const skillsWithRatings = await attachRatings(strapi, skills);
+
+  skillsWithRatings.sort((a, b) => {
+    if (Number(b.averageRating) !== Number(a.averageRating)) {
+      return Number(b.averageRating) - Number(a.averageRating);
+    }
+
+    if (b.reviewCount !== a.reviewCount) {
+      return b.reviewCount - a.reviewCount;
+    }
+
+    return (
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
+    );
+  });
+
+  ctx.body = {
+    skills: skillsWithRatings.slice(0, limit),
+  };
+},
+
   /**
    * GET /api/skills
    */

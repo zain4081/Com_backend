@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2026-07-13T23:16:07.809Z"
+    "x-generation-date": "2026-07-15T14:25:59.589Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -5809,6 +5809,9 @@
                   "description": {
                     "type": "string"
                   },
+                  "icon": {
+                    "type": "string"
+                  },
                   "createdAt": {
                     "type": "string",
                     "format": "date-time"
@@ -6938,7 +6941,8 @@
           "data": {
             "required": [
               "name",
-              "slug"
+              "slug",
+              "icon"
             ],
             "type": "object",
             "properties": {
@@ -6949,6 +6953,9 @@
                 "type": "string"
               },
               "description": {
+                "type": "string"
+              },
+              "icon": {
                 "type": "string"
               },
               "locale": {
@@ -7011,7 +7018,8 @@
         "type": "object",
         "required": [
           "name",
-          "slug"
+          "slug",
+          "icon"
         ],
         "properties": {
           "id": {
@@ -7034,6 +7042,9 @@
             "type": "string"
           },
           "description": {
+            "type": "string"
+          },
+          "icon": {
             "type": "string"
           },
           "createdAt": {
@@ -7455,6 +7466,9 @@
                   "type": "string"
                 },
                 "description": {
+                  "type": "string"
+                },
+                "icon": {
                   "type": "string"
                 },
                 "createdAt": {
@@ -8527,6 +8541,9 @@
                         "type": "string"
                       },
                       "description": {
+                        "type": "string"
+                      },
+                      "icon": {
                         "type": "string"
                       },
                       "createdAt": {
@@ -10929,6 +10946,9 @@
                   "description": {
                     "type": "string"
                   },
+                  "icon": {
+                    "type": "string"
+                  },
                   "createdAt": {
                     "type": "string",
                     "format": "date-time"
@@ -12290,6 +12310,9 @@
                         "type": "string"
                       },
                       "description": {
+                        "type": "string"
+                      },
+                      "icon": {
                         "type": "string"
                       },
                       "createdAt": {
@@ -13783,6 +13806,9 @@
                 "type": "string"
               },
               "description": {
+                "type": "string"
+              },
+              "icon": {
                 "type": "string"
               },
               "createdAt": {

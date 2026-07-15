@@ -13,6 +13,14 @@ module.exports = {
     },
     {
       method: "GET",
+      path: "/skills/homepage",
+      handler: "skill.homepageSkills",
+      config: {
+        auth: false,
+      },
+    },
+    {
+      method: "GET",
       path: "/skills/type/:type",
       handler: "skill.findByType",
       config: {
